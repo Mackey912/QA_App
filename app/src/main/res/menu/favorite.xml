@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+tools:context="jp.techacademy.shohei.qa_app.QuestionDetailActivity">
+    <item
+        android:title="star"
+        android:id="@+id/star"
+        android:icon="@android:drawable/btn_star_big_off"
+        android:checked="true"
+        app:showAsAction="always"/>
+</menu>
