@@ -6,6 +6,9 @@ import com.google.firebase.database.DatabaseReference
 import android.support.design.widget.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import android.preference.PreferenceManager
+import android.support.design.widget.NavigationView
+import android.view.Menu
+import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_setting.*

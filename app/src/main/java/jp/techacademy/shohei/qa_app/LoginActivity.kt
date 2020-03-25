@@ -3,8 +3,12 @@ package jp.techacademy.shohei.qa_app
 import android.content.Context
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 
@@ -27,6 +31,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var mLoginListener: OnCompleteListener<AuthResult>
     private lateinit var mDataBaseReference: DatabaseReference
 
+
+
     // アカウント作成時にフラグを立て、ログイン処理後に名前をFirebaseに保存する
     private var mIsCreateAccount = false
 
@@ -39,6 +45,8 @@ class LoginActivity : AppCompatActivity() {
         // FirebaseAuthのオブジェクトを取得する
         mAuth = FirebaseAuth.getInstance()
 
+
+
         // アカウント作成処理のリスナー
         mCreateAccountListener = OnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -47,6 +55,7 @@ class LoginActivity : AppCompatActivity() {
                 val email = emailText.text.toString()
                 val password = passwordText.text.toString()
                 login(email, password)
+
             } else {
 
                 // 失敗した場合
@@ -90,6 +99,7 @@ class LoginActivity : AppCompatActivity() {
                 // プログレスバーを非表示にする
                 progressBar.visibility = View.GONE
 
+
                 // Activityを閉じる
                 finish()
 
@@ -101,6 +111,7 @@ class LoginActivity : AppCompatActivity() {
 
                 // プログレスバーを非表示にする
                 progressBar.visibility = View.GONE
+
             }
         }
 
