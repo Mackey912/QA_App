@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var mQuestionArrayList: ArrayList<Question>
     private lateinit var mAdapter: QuestionsListAdapter
 
+    lateinit var favKey:ArrayList<String>
 
     private var mGenreRef: DatabaseReference? = null
 
@@ -119,6 +120,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         mToolbar = findViewById(R.id.toolbar)
         setSupportActionBar(mToolbar)
+
+        //ちゃんと初期化，いきなりaddは使えないよ！！
+        //おそらくコンストラクタが一回も呼び出せれていないから
+        favKey= arrayListOf()
 
         var nav: NavigationView = findViewById(R.id.nav_view)
         var menu: Menu = nav.menu
@@ -275,13 +280,36 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             mGenreRef!!.removeEventListener(mEventListener)
         }
         mGenreRef = mDatabaseReference.child(ContentsPATH).child(mGenre.toString())
+
+        val uid = FirebaseAuth.getInstance().currentUser!!.uid
+
+        //favoriteに登録してあるキーを取り出す
+        val fav = mDatabaseReference.child("favorite").child(uid)
+        val favListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // keyの値をリスト化
+                favKey.clear()
+                for (i in dataSnapshot.children) {
+                    Log.d("test", i.key.toString())
+                    favKey.add(i.key.toString())
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        }
+        fav.addValueEventListener(favListener)
+
         //mGenre=5のときはpathが違うので別処理
         if(mGenre==5){
-            val user = FirebaseAuth.getInstance().currentUser
-            mDatabaseReference.child("favorite").child(user!!.uid).addChildEventListener(mEventListener)
+            //まだ未完成！！！このままだとお気に入りとカテゴリーデータの間で同期がとれない
+            //手順１，この条件下ですべてのジャンル1～5をすべてリスナー登録する
+            //手順２，childlistenerをいじり，mGenre=5の時はfavKeyと同じ時のみ，アダプターに登録
+            //手順３，QuestionDetailで登録したuid以下は使わないため，消してよい
+            mDatabaseReference.child("favorite").child(uid).addChildEventListener(mEventListener)
+
         }else {
             mGenreRef!!.addChildEventListener(mEventListener)
-            // --- ここまで追加する ---
         }
         return true
     }
